@@ -3,7 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use ReCaptcha\ReCaptcha;
+use Illuminate\Http\Request;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +23,17 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $user = User::create([
+            'email' => 'miftah@gmail.com',
+            'password' => bcrypt('@Miftahus1'),
+            'role' => 'admin',
+        ]);
+        if ($user) {
+            Admin::create([
+                'name' => 'Miftahus 1',
+                'user_id' => $user->id
+            ]);
+        }
     }
 }
