@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.index')
 
 @section('main-content')
     <div class="pagetitle">

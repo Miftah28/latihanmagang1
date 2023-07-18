@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pengguna;
+use App\Models\Penumpang;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -77,7 +77,7 @@ class RegisterController extends Controller
             'role' => 'penumpang',
         ]);
         if ($result) {
-            Pengguna::create([
+            Penumpang::create([
                 'name' => $data['name'],
                 'user_id' => $result->id,
             ]);

@@ -53,8 +53,8 @@ class User extends Authenticatable
     public function supir(){
         return $this->hasOne('App\Models\Supir');
     }
-    public function pelanggan(){
-        return $this->hasOne('App\Models\Pelanggan');
+    public function penumpang(){
+        return $this->hasOne('App\Models\Penumpang');
     }
 
 }

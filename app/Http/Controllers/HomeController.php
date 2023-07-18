@@ -23,13 +23,13 @@ class HomeController extends Controller
     public function index()
     {
         if (auth()->user()->role == 'admin') {
-            return view('admin.home');
+            return view('Admin.home');
         } else if(auth()->user()->role == 'admindaerah') {
             return view('admindaerah.home');
         } else if(auth()->user()->role == 'supir') {
             return view('supir.home');
         } else if(auth()->user()->role == 'penumpang') {
-            return view('penumpang.index');
+            return view('layouts.index');
         }
     }
 }
