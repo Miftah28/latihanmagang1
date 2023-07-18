@@ -3,8 +3,8 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
         @if (auth()->user()->role == 'admin')
-            <li class="nav-item {{ Route::current()->getName()=='home' ? 'active' : '' }}">
-                <a class="nav-link" href="{{route('home')}}">
+            <li class="nav-item ">
+                <a class="nav-link collapsed{{ request()->is('home') ? ' active' : '' }}" href="{{route('home')}}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>

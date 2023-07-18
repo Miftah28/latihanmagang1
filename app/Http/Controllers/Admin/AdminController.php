@@ -118,5 +118,17 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.admin.index');
-    }   
+    }
+
+    public function destroy($id)
+    {
+        $admin = Admin::findOrFail(Crypt::decrypt($id));
+        if ($admin->delete()) {
+            $user = User::findOrFail($admin->user_id);
+            $user->delete();
+            alert()->success('Success','Data Berhasil Dihapus');
+        }
+        return redirect()->route('admin.admin.index');
+    }
+
 }

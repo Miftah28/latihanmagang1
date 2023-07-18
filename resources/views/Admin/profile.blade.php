@@ -5,7 +5,7 @@
         <h1>Profile</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item">Users</li>
                 <li class="breadcrumb-item active">Profile</li>
             </ol>
@@ -20,8 +20,8 @@
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
                         <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <h2>{{$data->name}}</h2>
-                        <h3>{{$data->user->role}}</h3>
+                        <h2>{{ $data->name }}</h2>
+                        <h3>{{ $data->user->role }}</h3>
                         <div class="social-links mt-2">
                             <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
                             <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -68,7 +68,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">{{$data->name}}</div>
+                                    <div class="col-lg-9 col-md-8">{{ $data->name }}</div>
                                 </div>
 
                                 <div class="row">
@@ -98,7 +98,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Email</div>
-                                    <div class="col-lg-9 col-md-8">{{$data->user->email}}</div>
+                                    <div class="col-lg-9 col-md-8">{{ $data->user->email }}</div>
                                 </div>
 
                             </div>
@@ -106,7 +106,8 @@
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                 <!-- Profile Edit Form -->
-                                <form method="POST" action="{{ route('admin.profile.update') }}" autocomplete="off" enctype="multipart/form-data">
+                                <form method="POST" action="{{ route('admin.profile.update') }}" autocomplete="off"
+                                    enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     {{ method_field('PUT') }}
                                     {{-- <div class="row mb-3">
@@ -126,7 +127,8 @@
                                     <div class="row mb-3">
                                         <label for="name" class="col-md-4 col-lg-3 col-form-label">Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input id="name" type="text" class="form-control" name="name" value="{{ $data->name }}" required>
+                                            <input id="name" type="text" class="form-control" name="name"
+                                                value="{{ $data->name }}" required>
                                         </div>
                                     </div>
 
@@ -180,7 +182,8 @@
                                     <div class="row mb-3">
                                         <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input id="email" type="email" class="form-control" name="email" value="{{ $data->user->email }}" required>
+                                            <input id="email" type="email" class="form-control" name="email"
+                                                value="{{ $data->user->email }}" required>
                                         </div>
                                     </div>
 
@@ -235,8 +238,8 @@
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="password" type="password" class="form-control"
-                                                id="currentPassword">
+                                            <input type="password" id="current_password" class="form-control"
+                                                name="current_password" placeholder="Current password">
                                         </div>
                                     </div>
 
@@ -244,8 +247,8 @@
                                         <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="newpassword" type="password" class="form-control"
-                                                id="newPassword">
+                                            <input type="password" id="new_password" class="form-control"
+                                                name="new_password" placeholder="New password">
                                         </div>
                                     </div>
 
@@ -253,8 +256,8 @@
                                         <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
                                             Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="renewpassword" type="password" class="form-control"
-                                                id="renewPassword">
+                                            <input type="password" id="confirm_password" class="form-control"
+                                                name="password_confirmation" placeholder="Confirm password">
                                         </div>
                                     </div>
 

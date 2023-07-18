@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -53,7 +54,33 @@ class ProfileController extends Controller
         return redirect()->route('admin.profile');
     }
 
-    public function updatepassword()
+    public function updatepassword(Request $request)
     {
+        $params = $request->all();
+
+        $request->validate([
+            'current_password' => 'nullable|required_with:new_password',
+            'new_password' => 'nullable|min:8|max:12|required_with:current_password',
+            'password_confirmation' => 'nullable|min:8|max:12|required_with:new_password|same:new_password'
+        ]);
+
+        $user = User::findOrFail(Auth::user()->id);
+
+        // Jika input current_password diisi, maka lakukan pengecekan password lama
+        if ($request->filled('current_password')) {
+            if (Hash::check($request->input('current_password'), $user->password)) {
+                $user->password = Hash::make($request->input('new_password'));
+            } else {
+                return redirect()->back()->withErrors(['current_password' => 'Password lama tidak sesuai.'])->withInput();
+            }
+        }
+
+        $instance = Admin::where('user_id', auth()->user()->id)->first();
+        if ($instance->update($params) && $user->save()) {
+            Session::flash('success', 'Data Berhasil Disimpan');
+        } else {
+            Session::flash('error', 'Data Gagal Disimpan');
+        }
+        return redirect()->route('admin.profile');
     }
 }

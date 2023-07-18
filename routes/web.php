@@ -34,7 +34,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::post('/adminstore', [AdminController::class,'store'])->name('admin.admin.store');
     Route::get('/adminedit{id}', [AdminController::class,'edit'])->name('admin.admin.edit');
     Route::put('/adminupdate{id}', [AdminController::class,'update'])->name('admin.admin.update');
-    Route::delete('/admindelete', [AdminController::class,'destroy'])->name('admin.admin.destroy');
+    Route::delete('/admindelete{id}', [AdminController::class,'destroy'])->name('admin.admin.destroy');
 });
 Route::middleware(['auth', 'user-access:penumpang'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('penumpang.dashboard');
