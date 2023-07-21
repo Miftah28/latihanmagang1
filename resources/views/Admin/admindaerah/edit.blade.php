@@ -2,12 +2,12 @@
 
 @section('main-content')
     <div class="pagetitle">
-        <h1>Form Akun Admin</h1>
+        <h1>Form Update Akun Admin</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Akun Admin</li>
+                <li class="breadcrumb-item active">Update Akun Admin</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -16,13 +16,14 @@
             <h5 class="card-title">Menammbahkan Akun Admin</h5>
 
             <!-- Vertical Form -->
-            <form class="row g-3" method="POST" action="{{ route('admin.admindaerah.store') }}"
+            <form class="row g-3" action="{{ route('admin.admindaerah.update', Crypt::encrypt($data->id)) }}" method="post"
                 enctype="multipart/form-data">
                 {{ csrf_field() }}
+                {{ method_field('PUT') }}
                 <div class="col-12">
                     <label for="inputNanme4" class="form-label">Your Name</label>
                     <input id="nama" type="text" class="form-control @error('nama') is-invalid @enderror"
-                        name="nama" value="{{ old('nama') }}" required autocomplete="nama" autofocus>
+                        name="nama" value="{{ $data->nama }}" required autocomplete="nama" autofocus>
                     @if ($errors->has('nama'))
                         <span class="help-block">
                             <strong>{{ $errors->first('nama') }}</strong>
@@ -33,8 +34,8 @@
                     <div class="form-floating mb-3">
                         <select class="form-control" name="teacher_id" required>
                             @forelse ($daerahs as $daerah)
-                                <option value="{{ $daerah->id }}"
-                                    {{ $data->daerah_id == $daerah->id ? 'selected' : '' }}>{{ $daerah->nama_daerah }}</option>
+                                <option value="{{ $daerah->id }}" {{ $data->daerah_id == $daerah->id ? 'selected' : '' }}>
+                                    {{ $daerah->nama_daerah }}</option>
                             @empty
                                 <option value="NULL">Kota belum diinput</option>
                             @endforelse
@@ -50,7 +51,7 @@
                 <div class="col-12">
                     <label for="inputEmail4" class="form-label">Email</label>
                     <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                        name="email" value="{{ old('email') }}" required autocomplete="email">
+                        name="email" value="{{ $data->user->email }}" autocomplete="email">
                     @if ($errors->has('email'))
                         <span class="help-block">
                             <strong>{{ $errors->first('email') }}</strong>
@@ -60,7 +61,7 @@
                 <div class="col-12">
                     <label for="inputPassword4" class="form-label">Password</label>
                     <input id="password" type="password" class="form-control @error('password') is-invalid @enderror"
-                        name="password" required autocomplete="new-password"
+                        name="password" autocomplete="new-password"
                         pattern="^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!$#%@]).*$">
                     @if ($errors->has('password'))
                         <span class="help-block">
@@ -79,7 +80,7 @@
                 </div>
                 <div class="col-12">
                     <label for="inputAddress" class="form-label">Confirm Password</label>
-                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation"
                         autocomplete="new-password">
                     @if ($errors->has('password-confirm'))
                         <span class="help-block">

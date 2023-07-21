@@ -96,9 +96,9 @@ class AdminController extends Controller
 
         $userValidator = Validator::make($userParams, [
             // Definisikan aturan validasi untuk atribut yang sesuai pada model User
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => 'nullable|email|unique:users',
             'password' => [
-                'required',
+                'nullable',
                 'min:8',
                 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
                 'confirmed'

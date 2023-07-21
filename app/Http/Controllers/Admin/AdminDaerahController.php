@@ -84,7 +84,7 @@ class AdminDaerahController extends Controller
 
     public function update(Request $request, $id)
     {
-        $adminParams = $request->except('email', 'password');
+        $adminParams = $request->except('email', 'password','daerah_id');
         $userParams = [];
 
         if ($request->filled('password')) {
@@ -102,9 +102,9 @@ class AdminDaerahController extends Controller
 
         $userValidator = Validator::make($userParams, [
             // Definisikan aturan validasi untuk atribut yang sesuai pada model User
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
             'password' => [
-                'required',
+                'nullable',
                 'min:8',
                 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
                 'confirmed'
