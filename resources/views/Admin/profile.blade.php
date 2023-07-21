@@ -232,7 +232,10 @@
 
                             <div class="tab-pane fade pt-3" id="profile-change-password">
                                 <!-- Change Password Form -->
-                                <form>
+                                <form  method="POST" action="{{ route('admin.profile.updatepassword') }}" autocomplete="off">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                
+                                    <input type="hidden" name="_method" value="PUT">
 
                                     <div class="row mb-3">
                                         <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current

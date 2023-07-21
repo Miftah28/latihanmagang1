@@ -70,6 +70,7 @@
 </head>
 
 <body>
+    @include('sweetalert::alert')
 
     <!-- ======= Header ======= -->
     @include('layouts.components.header')

@@ -56,8 +56,6 @@ class ProfileController extends Controller
 
     public function updatepassword(Request $request)
     {
-        $params = $request->all();
-
         $request->validate([
             'current_password' => 'nullable|required_with:new_password',
             'new_password' => 'nullable|min:8|max:12|required_with:current_password',
@@ -70,13 +68,16 @@ class ProfileController extends Controller
         if ($request->filled('current_password')) {
             if (Hash::check($request->input('current_password'), $user->password)) {
                 $user->password = Hash::make($request->input('new_password'));
+
+                // Hapus input password dari request agar tidak menyebabkan validasi gagal di masa depan
+                $request->offsetUnset('new_password');
+                $request->offsetUnset('password_confirmation');
             } else {
                 return redirect()->back()->withErrors(['current_password' => 'Password lama tidak sesuai.'])->withInput();
             }
         }
 
-        $instance = Admin::where('user_id', auth()->user()->id)->first();
-        if ($instance->update($params) && $user->save()) {
+        if ($user->save()) {
             Session::flash('success', 'Data Berhasil Disimpan');
         } else {
             Session::flash('error', 'Data Gagal Disimpan');

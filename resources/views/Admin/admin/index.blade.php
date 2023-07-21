@@ -2,7 +2,7 @@
 
 @section('main-content')
     <div class="pagetitle">
-        <h1>Data Tables</h1>
+        <h1>Data Tables Akun Admin</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -33,64 +33,49 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- Loop untuk menampilkan akun admin yang aktif --}}
-                                @foreach ($admin as $admins)
-                                    @if ($admins->id === Auth::user()->admin->id)
-                                        <tr>
-                                            <td scope="row">1</td>
-                                            <td>{{ $admins->name }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-outline-success" disabled>Aktif</button>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                @endforeach
-                            
-                                {{-- Loop untuk menampilkan akun admin yang tidak aktif --}}
-                                @php $counter = 2; @endphp
-                                @foreach ($admin as $admins)
-                                    @if ($admins->id !== Auth::user()->admin->id)
-                                        <tr>
-                                            <td scope="row">{{ $counter }}</td>
-                                            <td>{{ $admins->name }}</td>
-                                            <td>
-                                                <div class="d-flex">
+                                @forelse ($admin as $admins)
+                                    <tr>
+                                        <td scope="row">{{ $loop->iteration }}</td>
+                                        <td>{{ $admins->name }}</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                {{-- Cek apakah akun admin saat ini sedang digunakan --}}
+                                                @if ($admins->id !== Auth::user()->admin->id)
                                                     <div class="mr-2">
-                                                        <a href="{{ route('admin.admin.edit', Crypt::encrypt($admins->id)) }}" class="btn btn-sm btn-primary">
+                                                        <a href="{{ route('admin.admin.edit', Crypt::encrypt($admins->id)) }}"
+                                                            class="btn btn-sm btn-primary">
                                                             <i class="bi bi-pencil-square"></i>
                                                         </a>
                                                     </div>
                                                     <div class="mr-2">
-                                                        <form action="{{ route('admin.admin.destroy', Crypt::encrypt($admins->id)) }}" method="post">
+                                                        <form
+                                                            action="{{ route('admin.admin.destroy', Crypt::encrypt($admins->id)) }}"
+                                                            method="post">
                                                             @csrf
                                                             @method('delete')
-                                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Anda yakin ingin menghapus data ini?')">
+                                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                                onclick="return confirm('Anda yakin ingin menghapus data ini?')">
                                                                 <i class="bi bi-trash"></i>
                                                             </button>
                                                         </form>
                                                     </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @php $counter++; @endphp
-                                    @endif
-                                @endforeach
-                            
-                                {{-- Pesan jika tidak ada data --}}
-                                @if ($admin->isEmpty())
+                                                @else
+                                                    <button type="button" class="btn btn-outline-success"
+                                                        disabled>Aktif</button>
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @empty
                                     <tr>
                                         <td colspan="3">Data Tidak Ditemukan</td>
                                     </tr>
-                                @endif
+                                @endforelse
                             </tbody>
-                            
-
                         </table>
                         <!-- End Table with stripped rows -->
-
                     </div>
                 </div>
-
             </div>
         </div>
     </section>

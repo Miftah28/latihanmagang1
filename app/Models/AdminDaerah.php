@@ -10,10 +10,14 @@ class AdminDaerah extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'name',
+        'daerah_id',
+        'nama',
     ];
 
     public function user(){
         return $this->belongsTo('App\Models\User');
+    }
+    public function daerah(){
+        return $this->belongsTo('App\Models\Daerah');
     }
 }

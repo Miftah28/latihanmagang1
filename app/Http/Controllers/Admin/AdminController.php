@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\User;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -121,14 +123,23 @@ class AdminController extends Controller
     }
 
     public function destroy($id)
-    {
+{
+    try {
         $admin = Admin::findOrFail(Crypt::decrypt($id));
         if ($admin->delete()) {
             $user = User::findOrFail($admin->user_id);
             $user->delete();
-            alert()->success('Success','Data Berhasil Dihapus');
+            alert()->success('Success', 'Data Berhasil Dihapus');
+        } else {
+            alert()->error('Error', 'Data Gagal Dihapus');
         }
-        return redirect()->route('admin.admin.index');
+    } catch (DecryptException $e) {
+        alert()->error('Error', 'Data Tidak Ditemukan');
+    } catch (ModelNotFoundException $e) {
+        alert()->error('Error', 'Data Tidak Ditemukan');
     }
+
+    return redirect()->route('admin.admin.index');
+}
 
 }

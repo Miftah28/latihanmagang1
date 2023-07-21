@@ -5,16 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Supir extends Model
+class Daerah extends Model
 {
     use HasFactory;
-
     protected $fillable = [
-        'user_id',
-        'name',
+        'nama_daerah',
     ];
-
-    public function user(){
-        return $this->belongsTo('App\Models\User');
-    }
 }

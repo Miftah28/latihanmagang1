@@ -4,18 +4,18 @@
     <ul class="sidebar-nav" id="sidebar-nav">
         @if (auth()->user()->role == 'admin')
             <li class="nav-item ">
-                <a class="nav-link collapsed{{ request()->is('home') ? ' active' : '' }}" href="{{route('home')}}">
+                <a class="nav-link {{ request()->is('home') ? ' active' : '' }}" href="{{route('home')}}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed{{ request()->is('admin','admincreate') ? ' active' : '' }}"
+                <a class="nav-link collapsed{{ request()->is('admin','admincreate','adminedit','admindaerah','daerahreate', 'admindaerahedit','daerahedit',) ? ' active' : '' }}"
                     data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-person"></i><span>Akun</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="components-nav" class="nav-content collapse {{ request()->is('admin','admincreate') ? ' show' : '' }}"
+                <ul id="components-nav" class="nav-content collapse {{ request()->is('admin','admincreate','adminedit','admindaerah','daerahreate', 'admindaerahedit','daerahedit',) ? ' show' : '' }}"
                     data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="{{ route('admin.admin.index') }}"
@@ -24,7 +24,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="components-accordion.html"
+                        <a href="{{route('admin.admindaerah.index')}}"
                             class="{{ request()->is('admindaerah') ? ' active' : '' }}">
                             <i class="bi bi-circle"></i><span>Admin Daerah</span>
                         </a>
