@@ -25,32 +25,29 @@ class ProfileController extends Controller
     {
         $params = $request->all();
 
-        $validator = Validator::make($params, [
-            'email' => 'required|email|unique:users',
-            'name' => 'required|string|max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
-
+        // Ambil data pengguna dan admin berdasarkan user ID yang sedang login
         $user = User::findOrFail(auth()->user()->id);
         $admin = Admin::where('user_id', auth()->user()->id)->first();
 
+        // Update data email pada tabel users
         $userUpdated = $user->update([
-            'email' => $params['email'], // Update kolom email pada tabel users
+            'email' => $params['email'],
         ]);
 
+        // Update data name pada tabel admins
         $adminUpdated = $admin->update([
-            'name' => $params['name'], // Update kolom name pada tabel admins
+            'name' => $params['name'],
         ]);
 
         if ($userUpdated && $adminUpdated) {
-            session()->flash('success', 'Data Berhasil Disimpan');
+            // Jika update berhasil, tampilkan pesan sukses
+            alert()->success('Success', 'Data Berhasil Disimpan');
         } else {
-            session()->flash('error', 'Data Gagal Disimpan');
+            // Jika update gagal, tampilkan pesan error
+            alert()->error('Error', 'Data Gagal Disimpan');
         }
 
+        // Redirect ke halaman profil pengguna
         return redirect()->route('admin.profile');
     }
 

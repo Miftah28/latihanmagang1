@@ -4,14 +4,14 @@
     <ul class="sidebar-nav" id="sidebar-nav">
         @if (auth()->user()->role == 'admin')
             <li class="nav-item ">
-                <a class="nav-link {{ request()->is('home') ? ' active' : '' }}" href="{{route('home')}}">
+                <a class="nav-link {{ request()->is('home') ? '' : 'collapsed' }}" href="{{route('home')}}">
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed{{ request()->is('admin','admincreate','adminedit','admindaerah','daerahreate', 'admindaerahedit','daerahedit',) ? ' active' : '' }}"
+                <a class="nav-link {{ request()->is('admin','admincreate','adminedit','admindaerah','admindaerahcreate','daerahreate', 'admindaerahedit','daerahedit',) ? '' : 'collapsed' }}"
                     data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-person"></i><span>Akun</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
@@ -19,24 +19,24 @@
                     data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="{{ route('admin.admin.index') }}"
-                            class="{{ request()->is('admin','admincreate') ? ' active' : ''}}">
+                            class="{{ request()->is('admin','admincreate','adminedit') ? 'active' : 'collapsed'}}">
                             <i class="bi bi-circle"></i><span>Admin</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{route('admin.admindaerah.index')}}"
-                            class="{{ request()->is('admindaerah') ? ' active' : '' }}">
+                            class="{{ request()->is('admindaerah','admindaerahcreate','admindaerahedit','daerahcreate','daerahedit') ? 'active' : 'collapsed' }}">
                             <i class="bi bi-circle"></i><span>Admin Daerah</span>
                         </a>
                     </li>
                     <li>
-                        <a href="components-badges.html" class="{{ request()->is('admin/supir') ? ' active' : '' }}">
+                        <a href="components-badges.html" class="{{ request()->is('admin/supir') ? 'active' : 'collapsed' }}">
                             <i class="bi bi-circle"></i><span>Supir</span>
                         </a>
                     </li>
                     <li>
                         <a href="components-breadcrumbs.html"
-                            class="{{ request()->is('admin/penumpang') ? ' active' : '' }}">
+                            class="{{ request()->is('admin/penumpang') ? 'active' : 'collapsed' }}">
                             <i class="bi bi-circle"></i><span>Penumpang</span>
                         </a>
                     </li>
@@ -44,7 +44,7 @@
             </li><!-- End Components Nav -->
 
             <li class="nav-item">
-                <a class="nav-link collapsed{{ request()->is('laporan') ? ' active' : '' }}" href="users-profile.html">
+                <a class="nav-link {{ request()->is('laporan') ? '' : 'collapsed' }}" href="users-profile.html">
                     <i class="bi bi-menu-button-wide"></i>
                     <span>Laporan</span>
                 </a>

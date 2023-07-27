@@ -33,7 +33,6 @@ class AdminController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required|min:8',
             'password' => [
                 'required',
                 'min:8',

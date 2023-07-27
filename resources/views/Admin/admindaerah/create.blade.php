@@ -19,7 +19,7 @@
             <form class="row g-3" method="POST" action="{{ route('admin.admindaerah.store') }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="col-12">
-                    <label for="inputNanme4" class="form-label">Your Name</label>
+                    <label for="nama" class="form-label">Your Name</label>
                     <input id="nama" type="text" class="form-control @error('nama') is-invalid @enderror"
                         name="nama" value="{{ old('nama') }}" required autocomplete="nama" autofocus>
                     @if ($errors->has('nama'))

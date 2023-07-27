@@ -46,7 +46,7 @@
                                                         <i class="bi bi-pencil-square"></i>
                                                     </a>
                                                 </div>
-                                                <div class="mr-2">
+                                                {{-- <div class="mr-2">
                                                     <form
                                                         action="{{ route('admin.daerah.destroy', Crypt::encrypt($daerahs->id)) }}"
                                                         method="post">
@@ -57,7 +57,7 @@
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>
-                                                </div>
+                                                </div> --}}
                                             </div>
                                         </td>
                                     </tr>
@@ -128,7 +128,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3">Data Tidak Ditemukan</td>
+                                        <td colspan="4">Data Tidak Ditemukan</td>
                                     </tr>
                                 @endforelse
                             </tbody>

@@ -35,21 +35,21 @@ class AdminDaerahController extends Controller
     public function store(Request $request)
     {
 
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|min:8',
-            'password' => [
-                'required',
-                'min:8',
-                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
-                'confirmed'
-            ],
-            // Tambahkan aturan validasi lainnya sesuai kebutuhan Anda
-        ]);
+        // $validator = Validator::make($request->all(), [
+        //     'email' => 'required|email',
+        //     'password' => 'required|min:8',
+        //     'password' => [
+        //         'required',
+        //         'min:8',
+        //         'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
+        //         'confirmed'
+        //     ],
+        //     // Tambahkan aturan validasi lainnya sesuai kebutuhan Anda
+        // ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        // // if ($validator->fails()) {
+        // //     return redirect()->back()->withErrors($validator)->withInput();
+        // // }
 
         $params1 = $request->all();
         $params2 = [
@@ -83,50 +83,52 @@ class AdminDaerahController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $adminParams = $request->except('email', 'password','daerah_id');
-        $userParams = [];
+{
+    $adminParams = $request->except('email', 'password',);
+    $userParams = [];
 
-        if ($request->filled('password')) {
-            $userParams['password'] = Hash::make($request->password);
-        }
-
-        $admin = AdminDaerah::findOrFail(Crypt::decrypt($id));
-        $user = User::findOrFail($admin->user_id);
-
-        // Lakukan validasi data sebelum pembaruan
-        $adminValidator = Validator::make($adminParams, [
-            // Definisikan aturan validasi untuk atribut yang sesuai pada model Admin
-            'name' => 'required|string|max:255',
-        ]);
-
-        $userValidator = Validator::make($userParams, [
-            // Definisikan aturan validasi untuk atribut yang sesuai pada model User
-            'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => [
-                'nullable',
-                'min:8',
-                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
-                'confirmed'
-            ],
-        ]);
-
-        if ($adminValidator->fails() || $userValidator->fails()) {
-            // Kembalikan pesan kesalahan jika validasi gagal
-            return redirect()->back()
-                ->withErrors(array_merge($adminValidator->errors()->toArray(), $userValidator->errors()->toArray()))
-                ->withInput();
-        }
-
-        // Lakukan pembaruan data
-        if ($admin->update($adminParams) && $user->update($userParams)) {
-            alert()->success('Success', 'Data Berhasil Disimpan');
-        } else {
-            alert()->error('Error', 'Data Gagal Disimpan');
-        }
-
-        return redirect()->route('admin.admindaerah.index');
+    if ($request->filled('password')) {
+        $userParams['password'] = Hash::make($request->password);
     }
+
+    $admin = AdminDaerah::findOrFail(Crypt::decrypt($id));
+    $user = User::findOrFail($admin->user_id);
+
+    // Lakukan validasi data sebelum pembaruan
+    $adminValidator = Validator::make($adminParams, [
+        // Definisikan aturan validasi untuk atribut yang sesuai pada model Admin
+        'name' => 'required|string|max:255',
+        // Tambahkan aturan validasi lain sesuai kebutuhan
+    ]);
+
+    $userValidator = Validator::make($userParams, [
+        // Definisikan aturan validasi untuk atribut yang sesuai pada model User
+        'email' => ['nullable', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => [
+            'nullable',
+            'min:8',
+            'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
+            'confirmed'
+        ],
+        // Tambahkan aturan validasi lain sesuai kebutuhan
+    ]);
+
+    if ($adminValidator->fails() || $userValidator->fails()) {
+        // Kembalikan pesan kesalahan jika validasi gagal
+        return redirect()->back()
+            ->withErrors(array_merge($adminValidator->errors()->toArray(), $userValidator->errors()->toArray()))
+            ->withInput();
+    }
+
+    // Lakukan pembaruan data
+    if ($admin->update($adminParams) && $user->update($userParams)) {
+        alert()->success('Success', 'Data Berhasil Disimpan');
+    } else {
+        alert()->error('Error', 'Data Gagal Disimpan');
+    }
+
+    return redirect()->route('admin.admindaerah.index');
+}
 
     public function destroy($id)
     {

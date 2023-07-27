@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-12">
                     <div class="form-floating mb-3">
-                        <select class="form-control" name="teacher_id" required>
+                        <select class="form-control" name="daerah_id" required>
                             @forelse ($daerahs as $daerah)
                                 <option value="{{ $daerah->id }}" {{ $data->daerah_id == $daerah->id ? 'selected' : '' }}>
                                     {{ $daerah->nama_daerah }}</option>
@@ -40,9 +40,9 @@
                                 <option value="NULL">Kota belum diinput</option>
                             @endforelse
                         </select>
-                        @if ($errors->has('teacher'))
+                        @if ($errors->has('daerah'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('teacher') }}</strong>
+                                <strong>{{ $errors->first('daerah') }}</strong>
                             </span>
                         @endif
                         <label for="floatingSelect">State</label>
