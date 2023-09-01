@@ -23,7 +23,7 @@
                 <div class="col-12">
                     <label for="inputNanme4" class="form-label">Your Name</label>
                     <input id="nama" type="text" class="form-control @error('nama') is-invalid @enderror"
-                        name="nama" value="{{ $data->nama }}" required autocomplete="nama" autofocus>
+                        name="nama" value="{{ $data->nama }}" required autocomplete="name" autofocus>
                     @if ($errors->has('nama'))
                         <span class="help-block">
                             <strong>{{ $errors->first('nama') }}</strong>

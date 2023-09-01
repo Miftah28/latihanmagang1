@@ -11,11 +11,11 @@
             </li><!-- End Dashboard Nav -->
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('admin','admincreate','adminedit','admindaerah','admindaerahcreate','daerahreate', 'admindaerahedit','daerahedit',) ? '' : 'collapsed' }}"
+                <a class="nav-link {{ request()->is('admin','admincreate','adminedit','admindaerah','admindaerahcreate','daerahreate', 'admindaerahedit','daerahedit','supir','supircreate','supiredit','penumpang','penumpangcreate','penumpangedit') ? '' : 'collapsed' }}"
                     data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-person"></i><span>Akun</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="components-nav" class="nav-content collapse {{ request()->is('admin','admincreate','adminedit','admindaerah','daerahreate', 'admindaerahedit','daerahedit',) ? ' show' : '' }}"
+                <ul id="components-nav" class="nav-content collapse {{ request()->is('admin','admincreate','adminedit','admindaerah','daerahreate', 'admindaerahedit','daerahedit','supir','supircreate','supiredit','penumpang','penumpangcreate','penumpangedit') ? ' show' : '' }}"
                     data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="{{ route('admin.admin.index') }}"
@@ -30,13 +30,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="components-badges.html" class="{{ request()->is('admin/supir') ? 'active' : 'collapsed' }}">
+                        <a href="{{route('admin.supir.index')}}" class="{{ request()->is('supir','supircreate','supiredit') ? 'active' : 'collapsed' }}">
                             <i class="bi bi-circle"></i><span>Supir</span>
                         </a>
                     </li>
                     <li>
-                        <a href="components-breadcrumbs.html"
-                            class="{{ request()->is('admin/penumpang') ? 'active' : 'collapsed' }}">
+                        <a href="{{route('admin.penumpang.index')}}"
+                            class="{{ request()->is('penumpang','penumpangcreate','penumpangedit') ? 'active' : 'collapsed' }}">
                             <i class="bi bi-circle"></i><span>Penumpang</span>
                         </a>
                     </li>

@@ -16,30 +16,17 @@
             <h5 class="card-title">Menammbahkan Akun Admin</h5>
 
             <!-- Vertical Form -->
-            <form class="row g-3" method="POST" action="{{ route('admin.admindaerah.store') }}" enctype="multipart/form-data">
+            <form class="row g-3" method="POST" action="{{ route('admin.penumpang.store') }}" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="col-12">
-                    <label for="nama" class="form-label">Your Name</label>
-                    <input id="nama" type="text" class="form-control @error('nama') is-invalid @enderror"
-                        name="nama" value="{{ old('nama') }}" required autocomplete="name" autofocus>
-                    @if ($errors->has('nama'))
+                    <label for="inputNanme4" class="form-label">Your Name</label>
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                        name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    @if ($errors->has('name'))
                         <span class="help-block">
-                            <strong>{{ $errors->first('nama') }}</strong>
+                            <strong>{{ $errors->first('name') }}</strong>
                         </span>
                     @endif
-                </div>
-                <div class="col-12">
-                    <div class="form-floating mb-3">
-                        <select class="form-select" id="floatingSelect" aria-label="State"name="daerah_id" required>
-                            <option value="">Pilih Kota Daerah</option>
-                            @forelse ($daerahs as $daerah)
-                                <option value="{{ $daerah->id }}">{{ $daerah->nama_daerah }}</option>
-                            @empty
-                                <option value="NULL">Kota belum diinput</option>
-                            @endforelse
-                        </select>
-                        <label for="floatingSelect">State</label>
-                    </div>
                 </div>
                 <div class="col-12">
                     <label for="inputEmail4" class="form-label">Email</label>

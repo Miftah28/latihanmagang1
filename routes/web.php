@@ -57,19 +57,19 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::put('/admindaerahupdate{id}', [AdminDaerahController::class, 'update'])->name('admin.admindaerah.update');
     Route::delete('/admindaerahdelete{id}', [AdminDaerahController::class, 'destroy'])->name('admin.admindaerah.destroy');
     // CRUD Akun Supir
-    Route::get('/supir', [SupirController::class, 'index'])->name('supir.supir.index');
-    Route::get('/supircreate', [SupirController::class, 'create'])->name('supir.supir.create');
-    Route::post('/supirstore', [SupirController::class, 'store'])->name('supir.supir.store');
-    Route::get('/supiredit{id}', [SupirController::class, 'edit'])->name('supir.supir.edit');
-    Route::put('/supirupdate{id}', [SupirController::class, 'update'])->name('supir.supir.update');
-    Route::delete('/supirdelete{id}', [SupirController::class, 'destroy'])->name('supir.supir.destroy');
+    Route::get('/supir', [SupirController::class, 'index'])->name('admin.supir.index');
+    Route::get('/supircreate', [SupirController::class, 'create'])->name('admin.supir.create');
+    Route::post('/supirstore', [SupirController::class, 'store'])->name('admin.supir.store');
+    Route::get('/supiredit{id}', [SupirController::class, 'edit'])->name('admin.supir.edit');
+    Route::put('/supirupdate{id}', [SupirController::class, 'update'])->name('admin.supir.update');
+    Route::delete('/supirdelete{id}', [SupirController::class, 'destroy'])->name('admin.supir.destroy');
     // CRUD Akun Penumpang
-    Route::get('/penumpang', [PenumpangController::class, 'index'])->name('penumpang.penumpang.index');
-    Route::get('/penumpangcreate', [PenumpangController::class, 'create'])->name('penumpang.penumpang.create');
-    Route::post('/penumpangstore', [PenumpangController::class, 'store'])->name('penumpang.penumpang.store');
-    Route::get('/penumpangedit{id}', [PenumpangController::class, 'edit'])->name('penumpang.penumpang.edit');
-    Route::put('/penumpangupdate{id}', [PenumpangController::class, 'update'])->name('penumpang.penumpang.update');
-    Route::delete('/penumpangdelete{id}', [PenumpangController::class, 'destroy'])->name('penumpang.penumpang.destroy');
+    Route::get('/penumpang', [PenumpangController::class, 'index'])->name('admin.penumpang.index');
+    Route::get('/penumpangcreate', [PenumpangController::class, 'create'])->name('admin.penumpang.create');
+    Route::post('/penumpangstore', [PenumpangController::class, 'store'])->name('admin.penumpang.store');
+    Route::get('/penumpangedit{id}', [PenumpangController::class, 'edit'])->name('admin.penumpang.edit');
+    Route::put('/penumpangupdate{id}', [PenumpangController::class, 'update'])->name('admin.penumpang.update');
+    Route::delete('/penumpangdelete{id}', [PenumpangController::class, 'destroy'])->name('admin.penumpang.destroy');
 });
 
 // Akun Penumpang
