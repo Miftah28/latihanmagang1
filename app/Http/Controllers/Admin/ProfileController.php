@@ -32,15 +32,15 @@ class ProfileController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        $adminValidator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
-        ]);
+        // $adminValidator = Validator::make($request->all(), [
+        //     'name' => 'required|string|max:255',
+        //     'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
+        // ]);
 
-        if ($userValidator->fails() || $adminValidator->fails()) {
+        if ($userValidator->fails() ) {
             // Kembalikan pesan kesalahan jika validasi gagal
             return redirect()->back()
-                ->withErrors(array_merge($userValidator->errors()->toArray(), $adminValidator->errors()->toArray()))
+                ->withErrors(array_merge($userValidator->errors()->toArray()))
                 ->withInput();
         }
 

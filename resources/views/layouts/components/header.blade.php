@@ -17,7 +17,7 @@
                      if (auth()->user()->role == 'admin') {
                          $name = Auth::user()->admin->name;
                      } elseif (auth()->user()->role == 'admindaerah') {
-                         $name = Auth::user()->admindaerah->nama;
+                         $name = Auth::user()->admindaerah->name;
                      } elseif (auth()->user()->role == 'supir') {
                          $name = Auth::user()->supir->nama;
                      } elseif (auth()->user()->role == 'penumpang') {

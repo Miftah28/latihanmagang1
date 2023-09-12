@@ -8,6 +8,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Nette\Utils\DateTime;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -20,25 +23,38 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $params = $request->all();
-
         $user = User::findOrFail(auth()->user()->id);
-        $penumpang = AdminDaerah::where('user_id', auth()->user()->id)->first();
+        $admin = AdminDaerah::where('user_id', auth()->user()->id)->first();
 
-        $userUpdated = $user->update([
-            'email' => $params['email'], // Update kolom email pada tabel users
+        $userValidator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        $penumpangUpdated = $penumpang->update([
-            'nama' => $params['name'], // Update kolom name pada tabel penumpangs
-        ]);
+        // $adminValidator = Validator::make($request->all(), [
+        //     'name' => 'required|string|max:255',
+        //     'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
+        // ]);
 
-        if ($userUpdated && $penumpangUpdated) {
-            session()->flash('success', 'Data Berhasil Disimpan');
-        } else {
-            session()->flash('error', 'Data Gagal Disimpan');
+        if ($userValidator->fails()) {
+            // Kembalikan pesan kesalahan jika validasi gagal
+            return redirect()->back()
+                ->withErrors(array_merge($userValidator->errors()->toArray()))
+                ->withInput();
         }
 
+        $adminParams = $request->only(['name', 'photo']);
+        if ($request->has('photo')) {
+            $adminParams['photo'] = $this->simpanImage('admindaerah', $request->file('photo'), $adminParams['name']);
+        } else {
+            $adminParams = $request->except('photo');
+        }
+        $admin->update($adminParams);
+
+        $user->update([
+            'email' => $request->input('email'),
+        ]);
+
+        alert()->success('Success', 'Data Berhasil Disimpan');
         return redirect()->route('admindaerah.profile');
     }
 
@@ -65,5 +81,28 @@ class ProfileController extends Controller
             }
         }
         return redirect()->route('Admin Daerah.profile');
+    }
+
+    private function simpanImage($type, $foto, $nama)
+    {
+        $dt = new DateTime();
+
+        $path = public_path('storage/uploads/profil/' . $type . '/' . $dt->format('Y-m-d') . '/' . $nama);
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0755, true, true);
+        }
+        $file = $foto;
+        $name =  $type . '_' . $nama . '_' . $dt->format('Y-m-d');
+        $fileName = $name . '.' . $file->getClientOriginalExtension();
+        $folder = '/uploads/profil/' . $type . '/' . $dt->format('Y-m-d') . '/' . $nama;
+
+        $check = public_path($folder) . $fileName;
+
+        if (File::exists($check)) {
+            File::delete($check);
+        }
+
+        $filePath = $file->storeAs($folder, $fileName, 'public');
+        return $filePath;
     }
 }

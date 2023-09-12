@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
         ]);
         if ($user && $daerah) {
             AdminDaerah::create([
-                'nama' => 'Miftahus 2',
+                'name' => 'Miftahus 2',
                 'kota_id' => $kota->id,
                 'user_id' => $user->id,
                 'daerah_id' => $daerah->id

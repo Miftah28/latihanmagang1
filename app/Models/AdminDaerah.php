@@ -12,7 +12,7 @@ class AdminDaerah extends Model
         'user_id',
         'kota_id',
         'daerah_id',
-        'nama',
+        'name',
         'photo',
     ];
 

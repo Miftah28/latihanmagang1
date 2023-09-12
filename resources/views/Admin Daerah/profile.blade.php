@@ -19,8 +19,9 @@
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                        <h2>{{ $data->nama }}</h2>
+                        <img src="{{ $data->photo == null ? asset('images/preview.png') : asset('storage/' . $data->photo) }}"
+                            alt="Profile" class="rounded-circle">
+                        <h2>{{ $data->name }}</h2>
                         <h3>{{ $data->user->role }}</h3>
                         <div class="social-links mt-2">
                             <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
@@ -68,7 +69,7 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                                    <div class="col-lg-9 col-md-8">{{ $data->nama }}</div>
+                                    <div class="col-lg-9 col-md-8">{{ $data->name }}</div>
                                 </div>
 
                                 <div class="row">
@@ -110,25 +111,24 @@
                                     enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     {{ method_field('PUT') }}
-                                    {{-- <div class="row mb-3">
+                                    <div class="row mb-3">
                                         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile
                                             Image</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <img src="assets/img/profile-img.jpg" alt="Profile">
+                                            <img src="{{ $data->photo == null ? asset('images/preview.png') : asset('storage/' . $data->photo) }}"
+                                                width="100px" height="100px" />
                                             <div class="pt-2">
-                                                <a href="#" class="btn btn-primary btn-sm"
-                                                    title="Upload new profile image"><i class="bi bi-upload"></i></a>
-                                                <a href="#" class="btn btn-danger btn-sm"
-                                                    title="Remove my profile image"><i class="bi bi-trash"></i></a>
+                                                <input id="photo" type="file" class="form-control preview-image"
+                                                    name="photo" value="{{ old('photo') }}">
                                             </div>
                                         </div>
-                                    </div> --}}
+                                    </div>
 
                                     <div class="row mb-3">
-                                        <label for="nama" class="col-md-4 col-lg-3 col-form-label">Name</label>
+                                        <label for="name" class="col-md-4 col-lg-3 col-form-label">Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input id="nama" type="text" class="form-control" name="name"
-                                                value="{{ $data->nama }}" required>
+                                            <input id="name" type="text" class="form-control" name="name"
+                                                value="{{ $data->name }}" required>
                                         </div>
                                     </div>
 
@@ -232,9 +232,10 @@
 
                             <div class="tab-pane fade pt-3" id="profile-change-password">
                                 <!-- Change Password Form -->
-                                <form  method="POST" action="{{ route('admindaerah.profile.updatepassword') }}" autocomplete="off">
+                                <form method="POST" action="{{ route('admindaerah.profile.updatepassword') }}"
+                                    autocomplete="off">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                
+
                                     <input type="hidden" name="_method" value="PUT">
 
                                     <div class="row mb-3">
