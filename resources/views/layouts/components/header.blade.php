@@ -2,7 +2,7 @@
  <header id="header" class="header fixed-top d-flex align-items-center">
 
      <div class="d-flex align-items-center justify-content-between">
-         <a href="{{route('home')}}" class="logo d-flex align-items-center">
+         <a href="{{ route('home') }}" class="logo d-flex align-items-center">
              <img src="assets/img/logo.png" alt="">
              <span class="d-none d-lg-block">NiceAdmin</span>
          </a>
@@ -37,7 +37,19 @@
                  @endphp
                  <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                      data-bs-toggle="dropdown">
-                     <img src="{{ auth()->user()->admin->photo == null ? asset('images/preview.png') : asset('storage/'.auth()->user()->admin->photo) }}"class="img-profile rounded-circle">
+                     @if (auth()->user()->role == 'admin')
+                         <img
+                             src="{{ auth()->user()->admin->photo == null ? asset('images/preview.png') : asset('storage/' . auth()->user()->admin->photo) }}"class="img-profile rounded-circle">
+                     @elseif (auth()->user()->role == 'admindaerah')
+                         <img
+                             src="{{ auth()->user()->admindaerah->photo == null ? asset('images/preview.png') : asset('storage/' . auth()->user()->admindaerah->photo) }}"class="img-profile rounded-circle">
+                     @elseif (auth()->user()->role == 'supir')
+                         <img
+                             src="{{ auth()->user()->supir->photo == null ? asset('images/preview.png') : asset('storage/' . auth()->user()->supir->photo) }}"class="img-profile rounded-circle">
+                     @elseif (auth()->user()->role == 'penumpang')
+                         <img
+                             src="{{ auth()->user()->penumpang->photo == null ? asset('images/preview.png') : asset('storage/' . auth()->user()->penumpang->photo) }}"class="img-profile rounded-circle">
+                     @endif
                      {{-- <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> --}}
                      <span class="d-none d-md-block dropdown-toggle ps-2">{{ $name }}</span>
                  </a><!-- End Profile Iamge Icon -->
