@@ -15,11 +15,10 @@
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-2">
                     <a href="{{ route('admin.supir.create') }}" class="btn btn-primary" type="button"> <i
                             class="bi bi-plus-circle-dotted"></i> Tambah</a>
                 </div>
-                <br>
                 <div class="card ">
                     <div class="card-body">
                         <h5 class="card-title">Data Akun supir</h5>

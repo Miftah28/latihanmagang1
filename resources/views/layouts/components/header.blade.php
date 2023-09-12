@@ -17,9 +17,9 @@
                      if (auth()->user()->role == 'admin') {
                          $name = Auth::user()->admin->name;
                      } elseif (auth()->user()->role == 'admindaerah') {
-                         $name = Auth::user()->admindaerah->name;
+                         $name = Auth::user()->admindaerah->nama;
                      } elseif (auth()->user()->role == 'supir') {
-                         $name = Auth::user()->supir->name;
+                         $name = Auth::user()->supir->nama;
                      } elseif (auth()->user()->role == 'penumpang') {
                          $name = Auth::user()->penumpang->name;
                      }
@@ -37,7 +37,8 @@
                  @endphp
                  <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                      data-bs-toggle="dropdown">
-                     <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                     <img src="{{ auth()->user()->admin->photo == null ? asset('images/preview.png') : asset('storage/'.auth()->user()->admin->photo) }}"class="img-profile rounded-circle">
+                     {{-- <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle"> --}}
                      <span class="d-none d-md-block dropdown-toggle ps-2">{{ $name }}</span>
                  </a><!-- End Profile Iamge Icon -->
 

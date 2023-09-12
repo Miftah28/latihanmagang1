@@ -10,12 +10,17 @@ class AdminDaerah extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'kota_id',
         'daerah_id',
         'nama',
+        'photo',
     ];
 
     public function user(){
         return $this->belongsTo('App\Models\User');
+    }
+    public function kota(){
+        return $this->belongsTo('App\Models\Kota');
     }
     public function daerah(){
         return $this->belongsTo('App\Models\Daerah');

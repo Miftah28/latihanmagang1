@@ -6,36 +6,31 @@ use App\Http\Controllers\Controller;
 use App\Models\AdminDaerah;
 use App\Models\Daerah;
 use App\Models\Kota;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class DaerahController extends Controller
+class KotaController extends Controller
 {
-
     public function index()
     {
-        $daerahs = Daerah::all();
-        $data['daerah'] = $daerahs;
-        return view('admin.daerah.index', $data);
+        $kotas = Kota::all();
+        $data['kota'] = $kotas;
+        return view('admin.kota.index', $data);
     }
 
     public function create()
     {
         $kotas = Kota::orderBy('nama_kota', 'ASC')->get();
         $data['kotas'] = $kotas;
-        $daerahs = Daerah::orderBy('nama_daerah', 'ASC')->get();
-        $data['daerahs'] = $daerahs;
-        return view('admin.daerah.create', $data);
+        return view('admin.kota.create', $data);
     }
 
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_daerah' => 'required|string|max:255',
+            'nama_kota' => 'required|string|max:255',
             // Tambahkan aturan validasi lainnya sesuai kebutuhan Anda
         ]);
 
@@ -44,59 +39,60 @@ class DaerahController extends Controller
         }
 
         $params1 = $request->all();
-        $daerah = Daerah::create($params1);
-        if ($daerah) {
+        $kota = Kota::create($params1);
+        if ($kota) {
             alert()->success('Success', 'Data Berhasil Disimpan');
         } else {
             alert()->error('Error', 'Data Gagal Disimpan');
         }
 
-        return redirect()->route('admin.daerah.index');
+        return redirect()->route('admin.kota.index');
     }
 
     public function edit($id)
     {
-        $daerah = daerah::findOrFail(Crypt::decrypt($id));
-        $data['data'] = $daerah;
-        return view('admin.daerah.edit', $data);
+        $kota = kota::findOrFail(Crypt::decrypt($id));
+        $data['data'] = $kota;
+        return view('admin.kota.edit', $data);
     }
 
     public function update(Request $request, $id)
     {
-        $daerahParams = $request->all();
+        $kotaParams = $request->all();
 
-        $daerah = daerah::findOrFail(Crypt::decrypt($id));
+        $kota = kota::findOrFail(Crypt::decrypt($id));
 
         // Lakukan validasi data sebelum pembaruan
-        $daerahValidator = Validator::make($daerahParams, [
-            // Definisikan aturan validasi untuk atribut yang sesuai pada model daerah
-            'nama_daerah' => 'required|string|max:255',
+        $kotaValidator = Validator::make($kotaParams, [
+            // Definisikan aturan validasi untuk atribut yang sesuai pada model kota
+            'nama_kota' => 'required|string|max:255',
         ]);
 
-        if ($daerahValidator->fails()) {
+        if ($kotaValidator->fails()) {
             // Kembalikan pesan kesalahan jika validasi gagal
             return redirect()->back()
-                ->withErrors(array_merge($daerahValidator->errors()->toArray()))
+                ->withErrors(array_merge($kotaValidator->errors()->toArray()))
                 ->withInput();
         }
-
-        // Lakukan pembaruan data
-        if ($daerah->update($daerahParams)) {
+        if ($kota->update($kotaParams) ) {
             alert()->success('Success', 'Data Berhasil Disimpan');
         } else {
             alert()->error('Error', 'Data Gagal Disimpan');
         }
 
-        return redirect()->route('admin.daerah.index');
+        return redirect()->route('admin.kota.index');
     }
 
     public function destroy($id)
     {
-        $daerah = daerah::findOrFail(Crypt::decrypt($id));
-        $adminDaerah = AdminDaerah::where('daerah_id', $id);
-        if ($daerah->delete() && $adminDaerah->delete()) {
+        $kota = kota::findOrFail(Crypt::decrypt($id));
+        $daerah = Daerah::where('kota_id',$id);
+        $kotanya = $kota->nama_kota;
+        // dd($kotanya);
+        $admindaerah = AdminDaerah::where('kota', $kotanya);
+        if ($kota->delete() && $daerah->delete() && $admindaerah->delete()) {
             alert()->success('Success', 'Data Berhasil Dihapus');
         }
-        return redirect()->route('admin.daerah.index');
+        return redirect()->route('admin.kota.index');
     }
 }

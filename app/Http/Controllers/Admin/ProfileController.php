@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Nette\Utils\DateTime;
+use Illuminate\Support\Facades\File;
 
 class ProfileController extends Controller
 {
@@ -23,33 +25,41 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $params = $request->all();
-
-        // Ambil data pengguna dan admin berdasarkan user ID yang sedang login
         $user = User::findOrFail(auth()->user()->id);
         $admin = Admin::where('user_id', auth()->user()->id)->first();
 
-        // Update data email pada tabel users
-        $userUpdated = $user->update([
-            'email' => $params['email'],
+        $userValidator = Validator::make($request->all(), [
+            'email' => 'required|email|unique:users,email,' . $user->id,
         ]);
 
-        // Update data name pada tabel admins
-        $adminUpdated = $admin->update([
-            'name' => $params['name'],
+        $adminValidator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
         ]);
 
-        if ($userUpdated && $adminUpdated) {
-            // Jika update berhasil, tampilkan pesan sukses
-            alert()->success('Success', 'Data Berhasil Disimpan');
-        } else {
-            // Jika update gagal, tampilkan pesan error
-            alert()->error('Error', 'Data Gagal Disimpan');
+        if ($userValidator->fails() || $adminValidator->fails()) {
+            // Kembalikan pesan kesalahan jika validasi gagal
+            return redirect()->back()
+                ->withErrors(array_merge($userValidator->errors()->toArray(), $adminValidator->errors()->toArray()))
+                ->withInput();
         }
 
-        // Redirect ke halaman profil pengguna
+        $adminParams = $request->only(['name', 'photo']);
+        if ($request->has('photo')) {
+            $adminParams['photo'] = $this->simpanImage('admin', $request->file('photo'), $adminParams['name']);
+        } else {
+            $adminParams = $request->except('photo');
+        }
+        $admin->update($adminParams);
+
+        $user->update([
+            'email' => $request->input('email'),
+        ]);
+
+        alert()->success('Success', 'Data Berhasil Disimpan');
         return redirect()->route('admin.profile');
     }
+
 
     public function updatepassword(Request $request)
     {
@@ -80,5 +90,28 @@ class ProfileController extends Controller
             Session::flash('error', 'Data Gagal Disimpan');
         }
         return redirect()->route('admin.profile');
+    }
+
+    private function simpanImage($type, $foto, $nama)
+    {
+        $dt = new DateTime();
+
+        $path = public_path('storage/uploads/profil/' . $type . '/' . $dt->format('Y-m-d') . '/' . $nama);
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0755, true, true);
+        }
+        $file = $foto;
+        $name =  $type . '_' . $nama . '_' . $dt->format('Y-m-d');
+        $fileName = $name . '.' . $file->getClientOriginalExtension();
+        $folder = '/uploads/profil/' . $type . '/' . $dt->format('Y-m-d') . '/' . $nama;
+
+        $check = public_path($folder) . $fileName;
+
+        if (File::exists($check)) {
+            File::delete($check);
+        }
+
+        $filePath = $file->storeAs($folder, $fileName, 'public');
+        return $filePath;
     }
 }

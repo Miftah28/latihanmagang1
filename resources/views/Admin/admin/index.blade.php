@@ -15,12 +15,11 @@
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-2">
                     <a href="{{ route('admin.admin.create') }}" class="btn btn-primary" type="button"> <i
                             class="bi bi-plus-circle-dotted"></i> Tambah</a>
                 </div>
-                <br>
-                <div class="card ">
+                <div class="card mb-2">
                     <div class="card-body">
                         <h5 class="card-title">Data Akun Admin</h5>
                         <!-- Table with stripped rows -->
@@ -41,6 +40,43 @@
                                             <div class="d-flex">
                                                 {{-- Cek apakah akun admin saat ini sedang digunakan --}}
                                                 @if ($admins->id !== Auth::user()->admin->id)
+                                                    {{-- <div class="mr-2">
+                                                        <a href=""type="button" class="btn btn-sm btn-success"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#basicModal{{ $admins->id }}">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="modal fade" id="basicModal{{ $admins->id }}"
+                                                        tabindex="-1">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Basic Modal</h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <table class="table datatable">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th scope="col">No</th>
+                                                                                <th scope="col">Name</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <td scope="row">{{ $loop->iteration }}</td>
+                                                                            <td>{{ $admins->name }}</td>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div><!-- End Basic Modal--> --}}
                                                     <div class="mr-2">
                                                         <a href="{{ route('admin.admin.edit', Crypt::encrypt($admins->id)) }}"
                                                             class="btn btn-sm btn-primary">

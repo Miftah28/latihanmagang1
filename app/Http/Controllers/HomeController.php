@@ -25,7 +25,7 @@ class HomeController extends Controller
         if (auth()->user()->role == 'admin') {
             return view('Admin.home');
         } else if(auth()->user()->role == 'admindaerah') {
-            return view('admindaerah.home');
+            return view('Admin Daerah.home');
         } else if(auth()->user()->role == 'supir') {
             return view('supir.home');
         } else if(auth()->user()->role == 'penumpang') {

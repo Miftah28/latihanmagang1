@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('daerahs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('kota_id');
             $table->string('nama_daerah');
             $table->timestamps();
+
+            $table->foreign('kota_id')->references('id')->on('kotas')->onDelete('cascade');
         });
     }
 

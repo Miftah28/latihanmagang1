@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use App\Models\User;
+use Nette\Utils\DateTime;
+use Illuminate\Support\Facades\File;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -39,6 +41,8 @@ class AdminController extends Controller
                 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
                 'confirmed'
             ],
+            'name' => 'required|string|max:255', // Validasi untuk 'name'
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096', // Validasi untuk 'photo'
             // Tambahkan aturan validasi lainnya sesuai kebutuhan Anda
         ]);
 
@@ -52,6 +56,10 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'admin'
         ];
+
+        if ($request->has('photo')) {
+            $params1['photo'] = $this->simpanImage('admin', $request->file('photo'), $params1['name']);
+        }
 
         $user = User::create($params2);
         if ($user) {
@@ -68,6 +76,7 @@ class AdminController extends Controller
         return redirect()->route('admin.admin.index');
     }
 
+
     public function edit($id)
     {
         $admin = Admin::findOrFail(Crypt::decrypt($id));
@@ -77,32 +86,32 @@ class AdminController extends Controller
 
     public function update(Request $request, $id)
     {
-        $adminParams = $request->except('email', 'password');
-        $userParams = [];
-
-        if ($request->filled('password')) {
-            $userParams['password'] = Hash::make($request->password);
-        }
-
+        // Mengambil data admin dan user yang akan diperbarui
         $admin = Admin::findOrFail(Crypt::decrypt($id));
         $user = User::findOrFail($admin->user_id);
 
-        // Lakukan validasi data sebelum pembaruan
-        $adminValidator = Validator::make($adminParams, [
-            // Definisikan aturan validasi untuk atribut yang sesuai pada model Admin
+        // Validasi data admin
+        $adminValidator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096',
         ]);
 
-        $userValidator = Validator::make($userParams, [
-            // Definisikan aturan validasi untuk atribut yang sesuai pada model User
-            'email' => 'nullable|email|unique:users',
+        // Validasi data user
+        $userValidatorRules = [
             'password' => [
                 'nullable',
                 'min:8',
                 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
                 'confirmed'
             ],
-        ]);
+        ];
+
+        // Validasi email hanya jika ada perubahan
+        if ($user->email != $request->input('email')) {
+            $userValidatorRules['email'] = 'nullable|email|unique:users,email,' . $user->id;
+        }
+
+        $userValidator = Validator::make($request->all(), $userValidatorRules);
 
         if ($adminValidator->fails() || $userValidator->fails()) {
             // Kembalikan pesan kesalahan jika validasi gagal
@@ -111,20 +120,48 @@ class AdminController extends Controller
                 ->withInput();
         }
 
-        // Lakukan pembaruan data
+        // Mengupdate data admin
+        $adminParams = $request->only(['name', 'photo']);
+        if ($request->has('photo')) {
+            $adminParams['photo'] = $this->simpanImage('admin', $request->file('photo'), $adminParams['name']);
+        } else {
+            $adminParams = $request->except('photo');
+        }
+        $admin->update($adminParams);
+
+        // Mengupdate data user jika password diisi
+        $userParams = [];
+        if ($request->filled('password')) {
+            $userParams['password'] = Hash::make($request->password);
+        }
+
+        // Mengupdate email hanya jika ada perubahan
+        if ($user->email != $request->input('email')) {
+            $userParams['email'] = $request->input('email');
+        }
+        $user->update($userParams);
+
         if ($admin->update($adminParams) && $user->update($userParams)) {
             alert()->success('Success', 'Data Berhasil Disimpan');
         } else {
             alert()->error('Error', 'Data Gagal Disimpan');
         }
-
         return redirect()->route('admin.admin.index');
     }
+
+
 
     public function destroy($id)
     {
         try {
             $admin = Admin::findOrFail(Crypt::decrypt($id));
+            $url = $admin->photo;
+            $dir = public_path('storage/' . substr($url, 0, strrpos($url, '/')));
+            $path = public_path('storage/' . $url);
+
+            File::delete($path);
+
+            rmdir($dir);
             if ($admin->delete()) {
                 $user = User::findOrFail($admin->user_id);
                 $user->delete();
@@ -139,5 +176,28 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.admin.index');
+    }
+
+    private function simpanImage($type, $foto, $nama)
+    {
+        $dt = new DateTime();
+
+        $path = public_path('storage/uploads/profil/' . $type . '/' . $dt->format('Y-m-d') . '/' . $nama);
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0755, true, true);
+        }
+        $file = $foto;
+        $name =  $type . '_' . $nama . '_' . $dt->format('Y-m-d');
+        $fileName = $name . '.' . $file->getClientOriginalExtension();
+        $folder = '/uploads/profil/' . $type . '/' . $dt->format('Y-m-d') . '/' . $nama;
+
+        $check = public_path($folder) . $fileName;
+
+        if (File::exists($check)) {
+            File::delete($check);
+        }
+
+        $filePath = $file->storeAs($folder, $fileName, 'public');
+        return $filePath;
     }
 }

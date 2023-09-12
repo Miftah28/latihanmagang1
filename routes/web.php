@@ -3,11 +3,14 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\AdminDaerahController;
 use App\Http\Controllers\Admin\DaerahController;
+use App\Http\Controllers\Admin\KotaController;
 use App\Http\Controllers\Admin\PenumpangController;
 use App\Http\Controllers\admin\ProfileController;
 use App\Http\Controllers\Admin\SupirController;
+use App\Http\Controllers\AdminDaerah\JadwalKeberangkatanController;
 use App\Http\Controllers\Penumppang\DashboardController;
 use App\Http\Controllers\Penumppang\ProfileController as PenumppangProfileController;
+use App\Http\Controllers\AdminDaerah\ProfileController as AdminDaerahProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -43,7 +46,15 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/adminedit{id}', [AdminController::class, 'edit'])->name('admin.admin.edit');
     Route::put('/adminupdate{id}', [AdminController::class, 'update'])->name('admin.admin.update');
     Route::delete('/admindelete{id}', [AdminController::class, 'destroy'])->name('admin.admin.destroy');
+    // CRUD Kategori Kota
+    Route::get('/Kota', [KotaController::class, 'index'])->name('admin.kota.index');
+    Route::get('/Kotacreate', [KotaController::class, 'create'])->name('admin.kota.create');
+    Route::post('/kotastore', [KotaController::class, 'store'])->name('admin.kota.store');
+    Route::get('/kotaedit{id}', [KotaController::class, 'edit'])->name('admin.kota.edit');
+    Route::put('/kotaupdate{id}', [KotaController::class, 'update'])->name('admin.kota.update');
+    Route::delete('/kotadelete{id}', [KotaController::class, 'destroy'])->name('admin.kota.destroy');
     // CRUD Kategori Daerah
+    Route::get('/daerah', [DaerahController::class, 'index'])->name('admin.daerah.index');
     Route::get('/daerahcreate', [DaerahController::class, 'create'])->name('admin.daerah.create');
     Route::post('/daerahstore', [DaerahController::class, 'store'])->name('admin.daerah.store');
     Route::get('/daerahedit{id}', [DaerahController::class, 'edit'])->name('admin.daerah.edit');
@@ -70,6 +81,14 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/penumpangedit{id}', [PenumpangController::class, 'edit'])->name('admin.penumpang.edit');
     Route::put('/penumpangupdate{id}', [PenumpangController::class, 'update'])->name('admin.penumpang.update');
     Route::delete('/penumpangdelete{id}', [PenumpangController::class, 'destroy'])->name('admin.penumpang.destroy');
+});
+
+// admin Daerah
+Route::middleware(['auth', 'user-access:admindaerah'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admindaerah.dashboard');
+    Route::get('/admindaerahprofile', [AdminDaerahProfileController::class, 'index'])->name('admindaerah.profile');
+    Route::put('/admindaerahprofile', [AdminDaerahProfileController::class, 'update'])->name('admindaerah.profile.update');
+    Route::put('/admindaerahprofilepassword', [AdminDaerahProfileController::class, 'updatepassword'])->name('admindaerah.profile.updatepassword');
 });
 
 // Akun Penumpang

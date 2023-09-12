@@ -11,18 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('admin_daerahs', function (Blueprint $table) {
+        Schema::create('jadwal_pemberangkatans', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('kota_id');
+            $table->unsignedBigInteger('admin_daerah_id');
             $table->unsignedBigInteger('daerah_id');
-            $table->string('nama');
-            $table->string('photo')->nullable();
+            $table->string('keberangkatan');
+            $table->string('tujuan');
+            $table->date('tanggal_keberangkatan');
+            $table->time('waktu');
+            $table->text('alamat');
+            $table->string('phone');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('kota_id')->references('id')->on('kotas')->onDelete('cascade');
             $table->foreign('daerah_id')->references('id')->on('daerahs')->onDelete('cascade');
+            $table->foreign('admin_daerah_id')->references('id')->on('admin_daerahs')->onDelete('cascade');
         });
     }
 
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('admin_daerahs');
+        Schema::dropIfExists('jadwal_pemberangkatans');
     }
 };
