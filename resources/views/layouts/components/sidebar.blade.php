@@ -16,7 +16,7 @@
                     <i class="bi bi-person"></i><span>Akun</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="components-nav"
-                    class="nav-content collapse {{ request()->is('admin', 'admincreate', 'adminedit', 'admindaerah', 'daerahreate', 'admindaerahedit', 'daerah','daerahedit', 'supir', 'supircreate', 'supiredit', 'penumpang', 'penumpangcreate', 'penumpangedit', 'Kota', 'Kotacreate', 'Kotaedit') ? ' show' : '' }}"
+                    class="nav-content collapse {{ request()->is('admin', 'admincreate', 'adminedit', 'admindaerah', 'daerahreate', 'admindaerahedit', 'daerah','daerahedit', 'supir', 'supircreate', 'supiredit', 'penumpang', 'penumpangcreate', 'penumpangedit', 'Kota', 'Kotacreate', 'Kotaedit') ? 'show' : '' }}"
                     data-bs-parent="#sidebar-nav">
                     <li>
                         <a href="{{ route('admin.admin.index') }}"
@@ -89,7 +89,7 @@
                 </a>
             </li><!-- End Dashboard Nav -->
             <li class="nav-item ">
-                <a class="nav-link {{ request()->is('home') ? '' : 'collapsed' }}" href="{{ route('home') }}">
+                <a class="nav-link {{ request()->is('admindaerahjadwalpemberangkatan') ? '' : 'collapsed' }}" href="{{ route('admindaerah.jadwal.pemberangkatan') }}">
                     <i class="bi bi-clock"></i>
                     <span>Jadwal Pemberakatan</span>
                 </a>

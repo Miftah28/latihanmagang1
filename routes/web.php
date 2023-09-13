@@ -89,7 +89,7 @@ Route::middleware(['auth', 'user-access:admindaerah'])->group(function () {
     Route::get('/admindaerahprofile', [AdminDaerahProfileController::class, 'index'])->name('admindaerah.profile');
     Route::put('/admindaerahprofile', [AdminDaerahProfileController::class, 'update'])->name('admindaerah.profile.update');
     Route::put('/admindaerahprofilepassword', [AdminDaerahProfileController::class, 'updatepassword'])->name('admindaerah.profile.updatepassword');
-    Route::get('/admindaerahjadwalpemberangkatan',[JadwalKeberangkatanController::class,'index'])->name('admindaerha.jadwal.pemberangkatan');
+    Route::get('/admindaerahjadwalpemberangkatan',[JadwalKeberangkatanController::class,'index'])->name('admindaerah.jadwal.pemberangkatan');
 });
 
 // Akun Penumpang
