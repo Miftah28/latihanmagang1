@@ -49,7 +49,7 @@ class AdminDaerahController extends Controller
                 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
                 'confirmed'
             ],
-            'nama' => 'required|string|max:255', // Validasi untuk 'name'
+            'name' => 'required|string|max:255', // Validasi untuk 'name'
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096', // Validasi untuk 'photo'
             // Tambahkan aturan validasi lainnya sesuai kebutuhan Anda
         ]);
@@ -66,7 +66,7 @@ class AdminDaerahController extends Controller
         ];
 
         if ($request->has('photo')) {
-            $params1['photo'] = $this->simpanImage('adminderah', $request->file('photo'), $params1['nama']);
+            $params1['photo'] = $this->simpanImage('adminderah', $request->file('photo'), $params1['name']);
         }
 
         $user = User::create($params2);
@@ -114,7 +114,7 @@ class AdminDaerahController extends Controller
 
         // Validasi data admin
         $adminValidator = Validator::make($request->all(), [
-            'nama' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
         ]);
 
@@ -143,9 +143,9 @@ class AdminDaerahController extends Controller
         }
 
         // Mengupdate data admin
-        $adminParams = $request->only(['nama', 'photo']);
+        $adminParams = $request->only(['name', 'photo']);
         if ($request->has('photo')) {
-            $adminParams['photo'] = $this->simpanImage('admindaerah', $request->file('photo'), $adminParams['nama']);
+            $adminParams['photo'] = $this->simpanImage('admindaerah', $request->file('photo'), $adminParams['name']);
         } else {
             $adminParams = $request->except('photo');
         }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('supirs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('nama');
+            $table->string('name');
             $table->string('photo')->nullable();
             $table->timestamps();
 

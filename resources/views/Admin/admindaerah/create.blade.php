@@ -7,7 +7,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item">Forms</li>
-                <li class="breadcrumb-item active">Akun Admin</li>
+                <li class="breadcrumb-item active">Akun Admin Daerah</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -54,13 +54,13 @@
                     <div class="card-body">
                         <div class="pl-lg-4">
                             <div class="col-12 mb-4">
-                                <label for="nama" class="form-label">Your Name</label>
-                                <input id="nama" type="text"
-                                    class="form-control @error('nama') is-invalid @enderror" name="nama"
-                                    value="{{ old('nama') }}" required autocomplete="name" autofocus>
-                                @if ($errors->has('nama'))
+                                <label for="name" class="form-label">Your Name</label>
+                                <input id="name" type="text"
+                                    class="form-control @error('name') is-invalid @enderror" name="name"
+                                    value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                @if ($errors->has('name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('nama') }}</strong>
+                                        <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
                             </div>

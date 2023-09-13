@@ -73,6 +73,13 @@
                     <i class="bi bi-menu-button-wide"></i>
                     <span>Laporan</span>
                 </a>
+            </li><!-- End Laporan Page Nav -->
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->is('adminprofile') ? '' : 'collapsed' }}" href="{{route('admin.profile')}}">
+                    <i class="bi bi-person-square"></i>
+                    <span>Profile</span>
+                </a>
             </li><!-- End Profile Page Nav -->
         @elseif (auth()->user()->role == 'admindaerah')
             <li class="nav-item ">
@@ -93,9 +100,23 @@
                     <span>Tiket Travel</span>
                 </a>
             </li><!-- End Tiket Travel Nav -->
+            <li class="nav-item ">
+                <a class="nav-link {{ request()->is('home') ? '' : 'collapsed' }}" href="{{ route('home') }}">
+                    <i class="bi bi-menu-button-wide"></i>
+                    <span>Laporan</span>
+                </a>
+            </li><!-- End Laporan Nav -->
+
+            <li class="nav-item ">
+                <a class="nav-link {{ request()->is('admindaerahprofile') ? '' : 'collapsed' }}" href="{{ route('admindaerah.profile') }}">
+                    <i class="bi bi-person-square"></i>
+                    <span>profile</span>
+                </a>
+            </li><!-- End profile Nav -->
         @elseif (auth()->user()->role == 'supir')
 
         @elseif (auth()->user()->role == 'penumpang')
+
         @endif
     </ul>
 

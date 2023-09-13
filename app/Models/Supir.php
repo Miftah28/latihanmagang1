@@ -11,7 +11,8 @@ class Supir extends Model
 
     protected $fillable = [
         'user_id',
-        'nama',
+        'name',
+        'photo',
     ];
 
     public function user(){

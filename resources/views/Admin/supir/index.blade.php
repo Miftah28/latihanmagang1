@@ -35,7 +35,7 @@
                                 @forelse ($supir as $supirs)
                                     <tr>
                                         <td scope="row">{{ $loop->iteration }}</td>
-                                        <td>{{ $supirs->nama }}</td>
+                                        <td>{{ $supirs->name }}</td>
                                         <td>
                                             <div class="d-flex">
                                                 {{-- Cek apakah akun supir saat ini sedang digunakan --}}

@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Nette\Utils\DateTime;
+use Illuminate\Support\Facades\File;
 
 class SupirController extends Controller
 {
@@ -23,7 +25,7 @@ class SupirController extends Controller
 
     public function create()
     {
-        $Supirs = Supir::orderBy('nama', 'ASC')->get();
+        $Supirs = Supir::orderBy('name', 'ASC')->get();
         $data['supirs'] = $Supirs;
         return view('admin.supir.create', $data);
     }
@@ -39,6 +41,8 @@ class SupirController extends Controller
                 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
                 'confirmed'
             ],
+            'name' => 'required|string|max:255', // Validasi untuk 'name'
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:4096', // Validasi untuk 'photo'
             // Tambahkan aturan validasi lainnya sesuai kebutuhan Anda
         ]);
 
@@ -53,11 +57,15 @@ class SupirController extends Controller
             'role' => 'supir'
         ];
 
+        if ($request->has('photo')) {
+            $params1['photo'] = $this->simpanImage('supir', $request->file('photo'), $params1['name']);
+        }
+
         $user = User::create($params2);
         if ($user) {
             $params1['user_id'] = $user->id;
-            $Supir = Supir::create($params1);
-            if ($Supir) {
+            $supir = Supir::create($params1);
+            if ($supir) {
                 alert()->success('Success', 'Data Berhasil Disimpan');
             } else {
                 $user->delete();
@@ -77,47 +85,66 @@ class SupirController extends Controller
 
     public function update(Request $request, $id)
     {
-        $SupirParams = $request->except('email', 'password');
-        $userParams = [];
+        // Mengambil data admin dan user yang akan diperbarui
+        $supir = Supir::findOrFail(Crypt::decrypt($id));
+        $user = User::findOrFail($supir->user_id);
 
-        if ($request->filled('password')) {
-            $userParams['password'] = Hash::make($request->password);
-        }
-
-        $Supir = Supir::findOrFail(Crypt::decrypt($id));
-        $user = User::findOrFail($Supir->user_id);
-
-        // Lakukan validasi data sebelum pembaruan
-        $SupirValidator = Validator::make($SupirParams, [
-            // Definisikan aturan validasi untuk atribut yang sesuai pada model Supir
-            'nama' => 'required|string|max:255',
+        // Validasi data supir
+        $supirValidator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:4096',
         ]);
 
-        $userValidator = Validator::make($userParams, [
-            // Definisikan aturan validasi untuk atribut yang sesuai pada model User
-            'email' => 'nullable|email|unique:users',
+        // Validasi data user
+        $userValidatorRules = [
             'password' => [
                 'nullable',
                 'min:8',
                 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%@]).*$/',
                 'confirmed'
             ],
-        ]);
+        ];
 
-        if ($SupirValidator->fails() || $userValidator->fails()) {
+        // Validasi email hanya jika ada perubahan
+        if ($user->email != $request->input('email')) {
+            $userValidatorRules['email'] = 'nullable|email|unique:users,email,' . $user->id;
+        }
+
+        $userValidator = Validator::make($request->all(), $userValidatorRules);
+
+        if ($supirValidator->fails() || $userValidator->fails()) {
             // Kembalikan pesan kesalahan jika validasi gagal
             return redirect()->back()
-                ->withErrors(array_merge($SupirValidator->errors()->toArray(), $userValidator->errors()->toArray()))
+                ->withErrors(array_merge($supirValidator->errors()->toArray(), $userValidator->errors()->toArray()))
                 ->withInput();
         }
 
-        // Lakukan pembaruan data
-        if ($Supir->update($SupirParams) && $user->update($userParams)) {
+        // Mengupdate data supir
+        $supirParams = $request->only(['name', 'photo']);
+        if ($request->has('photo')) {
+            $supirParams['photo'] = $this->simpanImage('supir', $request->file('photo'), $supirParams['name']);
+        } else {
+            $supirParams = $request->except('photo');
+        }
+        $supir->update($supirParams);
+
+        // Mengupdate data user jika password diisi
+        $userParams = [];
+        if ($request->filled('password')) {
+            $userParams['password'] = Hash::make($request->password);
+        }
+
+        // Mengupdate email hanya jika ada perubahan
+        if ($user->email != $request->input('email')) {
+            $userParams['email'] = $request->input('email');
+        }
+        $user->update($userParams);
+
+        if ($supir->update($supirParams) && $user->update($userParams)) {
             alert()->success('Success', 'Data Berhasil Disimpan');
         } else {
             alert()->error('Error', 'Data Gagal Disimpan');
         }
-
         return redirect()->route('admin.supir.index');
     }
 
@@ -139,5 +166,28 @@ class SupirController extends Controller
         }
 
         return redirect()->route('admin.supir.index');
+    }
+
+    private function simpanImage($type, $foto, $nama)
+    {
+        $dt = new DateTime();
+
+        $path = public_path('storage/uploads/profil/' . $type . '/' . $dt->format('Y-m-d') . '/' . $nama);
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0755, true, true);
+        }
+        $file = $foto;
+        $name =  $type . '_' . $nama . '_' . $dt->format('Y-m-d');
+        $fileName = $name . '.' . $file->getClientOriginalExtension();
+        $folder = '/uploads/profil/' . $type . '/' . $dt->format('Y-m-d') . '/' . $nama;
+
+        $check = public_path($folder) . $fileName;
+
+        if (File::exists($check)) {
+            File::delete($check);
+        }
+
+        $filePath = $file->storeAs($folder, $fileName, 'public');
+        return $filePath;
     }
 }

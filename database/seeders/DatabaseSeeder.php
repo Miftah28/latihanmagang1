@@ -69,7 +69,7 @@ class DatabaseSeeder extends Seeder
         ]);
         if ($user) {
             Supir::create([
-                'nama' => 'Miftahus 3',
+                'name' => 'Miftahus 3',
                 'user_id' => $user->id
             ]);
         }

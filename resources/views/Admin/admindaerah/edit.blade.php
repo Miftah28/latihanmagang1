@@ -64,12 +64,12 @@
                         <div class="pl-lg-4">
                             <div class="col-12 mb-4">
                                 <label for="inputNanme4" class="form-label">Your Name</label>
-                                <input id="nama" type="text"
-                                    class="form-control @error('nama') is-invalid @enderror" name="nama"
-                                    value="{{ $data->nama }}" required autocomplete="name" autofocus>
-                                @if ($errors->has('nama'))
+                                <input id="name" type="text"
+                                    class="form-control @error('name') is-invalid @enderror" name="name"
+                                    value="{{ $data->name }}" required autocomplete="name" autofocus>
+                                @if ($errors->has('name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('nama') }}</strong>
+                                        <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
                             </div>

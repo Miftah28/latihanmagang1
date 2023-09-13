@@ -38,7 +38,7 @@
                                 @forelse ($admin as $admins)
                                     <tr>
                                         <td scope="row">{{ $loop->iteration }}</td>
-                                        <td>{{ $admins->nama }}</td>
+                                        <td>{{ $admins->name }}</td>
                                         <td>{{ $admins->kota->nama_kota }}</td>
                                         <td>{{ $admins->daerah->nama_daerah }}</td>
                                         <td>
