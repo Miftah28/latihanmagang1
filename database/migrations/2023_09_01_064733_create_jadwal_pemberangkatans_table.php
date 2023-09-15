@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('admin_daerah_id');
             $table->unsignedBigInteger('daerah_id');
+            $table->string('kode');
             $table->string('keberangkatan');
             $table->string('tujuan');
             $table->date('tanggal_keberangkatan');
             $table->time('waktu');
             $table->text('alamat');
             $table->string('phone');
+            $table->integer('jumlah_tempat_duduk');
             $table->timestamps();
 
             $table->foreign('daerah_id')->references('id')->on('daerahs')->onDelete('cascade');

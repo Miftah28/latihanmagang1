@@ -90,6 +90,11 @@ Route::middleware(['auth', 'user-access:admindaerah'])->group(function () {
     Route::put('/admindaerahprofile', [AdminDaerahProfileController::class, 'update'])->name('admindaerah.profile.update');
     Route::put('/admindaerahprofilepassword', [AdminDaerahProfileController::class, 'updatepassword'])->name('admindaerah.profile.updatepassword');
     Route::get('/admindaerahjadwalpemberangkatan',[JadwalKeberangkatanController::class,'index'])->name('admindaerah.jadwal.pemberangkatan');
+    Route::get('/admindaerahjadwalpemberangkatancreate',[JadwalKeberangkatanController::class,'create'])->name('admindaerah.jadwal.pemberangkatan.create');
+    Route::post('/admindaerahjadwalpemberangkatanstore',[JadwalKeberangkatanController::class,'store'])->name('admindaerah.jadwal.pemberangkatan.store');
+    Route::get('/admindaerahjadwalpemberangkatanedit{id}',[JadwalKeberangkatanController::class,'edit'])->name('admindaerah.jadwal.pemberangkatan.edit');
+    Route::put('/admindaerahjadwalpemberangkatanupdate{id}',[JadwalKeberangkatanController::class,'update'])->name('admindaerah.jadwal.pemberangkatan.update');
+    Route::delete('/admindaerahjadwalpemberangkatandestroy{id}',[JadwalKeberangkatanController::class,'destroy'])->name('admindaerah.jadwal.pemberangkatan.destroy');
 });
 
 // Akun Penumpang

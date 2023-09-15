@@ -89,7 +89,7 @@
                 </a>
             </li><!-- End Dashboard Nav -->
             <li class="nav-item ">
-                <a class="nav-link {{ request()->is('admindaerahjadwalpemberangkatan') ? '' : 'collapsed' }}" href="{{ route('admindaerah.jadwal.pemberangkatan') }}">
+                <a class="nav-link {{ request()->is('admindaerahjadwalpemberangkatan','admindaerahjadwalpemberangkatancreate') ? '' : 'collapsed' }}" href="{{ route('admindaerah.jadwal.pemberangkatan') }}">
                     <i class="bi bi-clock"></i>
                     <span>Jadwal Pemberakatan</span>
                 </a>

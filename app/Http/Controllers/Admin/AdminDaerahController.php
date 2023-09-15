@@ -33,7 +33,7 @@ class AdminDaerahController extends Controller
         $data['kotas'] = $kotas;
         $daerahs = Daerah::orderBy('nama_daerah', 'ASC')->get();
         $data['daerahs'] = $daerahs;
-        $admins = AdminDaerah::orderBy('nama', 'ASC')->get();
+        $admins = AdminDaerah::orderBy('name', 'ASC')->get();
         $data['admins'] = $admins;
         return view('admin.admindaerah.create', $data);
     }
@@ -42,7 +42,7 @@ class AdminDaerahController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'password' => [
                 'required',
                 'min:8',
